@@ -37,3 +37,8 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: collinscloudskillsbucket-15022025
+  
+  BimboDemoBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: bimbocloudskillsbucket-15022025
