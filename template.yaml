@@ -1,0 +1,39 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+  CloudSkillsEncryptPDFFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: CloudskillsEncryptedPDF-Function
+      Architectures: [x86_64]
+      CodeUri: ./
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.12
+      Timeout: 15
+      MemorySize: 256
+      LoggingConfig:
+        LogFormat: JSON
+      Policies:
+        - AmazonS3FullAccess
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref CloudSkillsPDFSourceBucket
+            Events: s3:ObjectCreated:*
+
+  CloudSkillsPDFSourceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: cloudskillspdfsource-15022025
+
+  EncryptedPDFBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: cloudskillspdfsource-15022025-encrypted
+
+  CollinsDemoBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: collinscloudskillsbucket-15022025
