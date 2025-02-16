@@ -2,12 +2,12 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
 Resources:
-  CloudSkillsEncryptPDFFunction:
+  BIMBOEncryptPDFFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: CloudskillsEncryptedPDF-Function
+      FunctionName: BimboEncryptPDF-Function
       Architectures: [x86_64]
-      CodeUri: ./
+      CodeUri: app/hello/
       Handler: lambda_function.lambda_handler
       Runtime: python3.12
       Timeout: 15
@@ -20,25 +20,47 @@ Resources:
         S3Event:
           Type: S3
           Properties:
-            Bucket: !Ref CloudSkillsPDFSourceBucket
+            Bucket: !Ref BIMBOPDFSourceBucket
             Events: s3:ObjectCreated:*
 
-  CloudSkillsPDFSourceBucket:
+  BIMBOPDFSourceBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: cloudskillspdfsource-15022025
+      BucketName: bimbopdfsourcebucket-16022025
 
-  EncryptedPDFBucket:
+  BIMBOEncryptedPDFBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: cloudskillspdfsource-15022025-encrypted
+      BucketName: bimbopdfsourcebucket-16022025-encrypted
 
-  CollinsDemoBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: collinscloudskillsbucket-15022025
   
-  BimboDemoBucket:
+  TEENIEEncryptPDFFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: TennieEncryptPDF-Function
+      Architectures: [x86_64]
+      CodeUri: app/pdf/
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.12
+      Timeout: 15
+      MemorySize: 256
+      LoggingConfig:
+        LogFormat: JSON
+      Policies:
+        - AmazonS3FullAccess
+      Events:
+        S3Event:
+          Type: S3
+          Properties:
+            Bucket: !Ref TENNIESourcePDFBucket
+            Events: s3:ObjectCreated:*
+
+  TENNIESourcePDFBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: bimbocloudskillsbucket-15022025
+      BucketName: tenniepdfsourcebucket-16022025
+
+  TENNIEEncryptedPDFBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: tenniepdfsourcebucket-16022025-encrypted
